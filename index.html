@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farewell Rosyad</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #click-phase {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            z-index: 1000;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        #click-phase.hidden {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        .gym-scene {
+            display: flex;
+            align-items: flex-end;
+            gap: 30px;
+        }
+
+        .samsak {
+            width: 80px;
+            height: 220px;
+            position: relative;
+            transform-origin: top center;
+        }
+
+        .samsak-chain {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(180deg, #888, #444);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .samsak-body {
+            width: 80px;
+            height: 180px;
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 50%, #7b241c 100%);
+            border-radius: 40px 40px 30px 30px;
+            position: relative;
+            box-shadow: inset -10px 0 20px rgba(0,0,0,0.3), 0 10px 30px rgba(192,57,43,0.2);
+            animation: samsak-sway 3s ease-in-out infinite;
+        }
+
+        .samsak-body::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .samsak-body::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        @keyframes samsak-sway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        .samsak.hit {
+            animation: samsak-punch 0.3s ease;
+        }
+
+        @keyframes samsak-punch {
+            0% { transform: rotate(-2deg) scale(1); }
+            25% { transform: rotate(15deg) scale(0.95); }
+            50% { transform: rotate(-10deg) scale(0.98); }
+            75% { transform: rotate(5deg) scale(1); }
+            100% { transform: rotate(-2deg) scale(1); }
+        }
+
+        .glove-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .boxing-glove {
+            width: 140px;
+            height: 180px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.08s ease;
+            filter: drop-shadow(0 15px 30px rgba(192,57,43,0.3));
+        }
+
+        .boxing-glove:active {
+            transform: scale(0.92) translateY(5px);
+        }
+
+        .glove-main {
+            width: 110px;
+            height: 130px;
+            background: linear-gradient(145deg, #e74c3c 0%, #c0392b 60%, #a93226 100%);
+            border-radius: 55px 55px 45px 45px;
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            box-shadow: inset -8px -5px 15px rgba(0,0,0,0.2), inset 5px 5px 10px rgba(255,255,255,0.1);
+        }
+
+        .glove-thumb {
+            width: 45px;
+            height: 70px;
+            background: linear-gradient(145deg, #e74c3c 0%, #c0392b 100%);
+            border-radius: 22px;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            transform: rotate(-25deg);
+            box-shadow: inset -5px 0 10px rgba(0,0,0,0.15);
+        }
+
+        .glove-cuff {
+            width: 90px;
+            height: 45px;
+            background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+            border-radius: 8px 8px 12px 12px;
+            position: absolute;
+            bottom: -10px;
+            left: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .glove-cuff::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+
+        .glove-logo {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .click-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e74c3c;
+            text-align: center;
+        }
+
+        .click-sub {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .progress-wrap {
+            width: 200px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: #1a1a1a;
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #c0392b, #e74c3c, #f39c12);
+            border-radius: 3px;
+            transition: width 0.15s ease;
+        }
+
+        .progress-num {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .particle {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fly 0.4s ease-out forwards;
+        }
+
+        @keyframes fly {
+            to {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .float-text {
+            position: fixed;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #f39c12;
+            pointer-events: none;
+            animation: floatup 0.6s ease-out forwards;
+        }
+
+        @keyframes floatup {
+            to { transform: translateY(-50px) scale(1.1); opacity: 0; }
+        }
+
+        #letter {
+            display: none;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 48px 20px;
+            animation: fadein 0.8s ease;
+        }
+
+        #letter.active { display: block; }
+
+        @keyframes fadein {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .letter-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border: 1px solid #e74c3c;
+            border-radius: 16px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e74c3c;
+            margin-bottom: 16px;
+        }
+
+        .letter-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .letter-sub {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 36px;
+        }
+
+        .letter-body {
+            background: linear-gradient(135deg, rgba(26,26,46,0.5) 0%, rgba(10,10,10,0.7) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 32px 28px;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            color: #c0c0c0;
+        }
+
+        .letter-body p { margin-bottom: 16px; }
+        .letter-body p:last-child { margin-bottom: 0; }
+
+        .accent { color: #f39c12; font-weight: 500; }
+        .red { color: #e74c3c; font-weight: 500; }
+
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            color: #444;
+            letter-spacing: 6px;
+        }
+
+        .closing {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .signature {
+            margin-top: 6px;
+            font-weight: 600;
+            color: #e74c3c;
+        }
+
+        .emoji-row {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 1.4rem;
+            letter-spacing: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .gym-scene { gap: 20px; }
+            .boxing-glove { width: 110px; height: 150px; }
+            .glove-main { width: 90px; height: 110px; }
+            .glove-thumb { width: 38px; height: 60px; }
+            .glove-cuff { width: 75px; height: 40px; }
+            .samsak { width: 60px; height: 180px; }
+            .samsak-body { width: 60px; height: 140px; }
+            .letter-body { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="click-phase">
+        <div class="gym-scene">
+            <div class="samsak" id="samsak">
+                <div class="samsak-chain"></div>
+                <div class="samsak-body"></div>
+            </div>
+
+            <div class="glove-wrapper">
+                <div class="boxing-glove" id="glove">
+                    <div class="glove-main">
+                        <div class="glove-logo">🥊</div>
+                    </div>
+                    <div class="glove-thumb"></div>
+                    <div class="glove-cuff"></div>
+                </div>
+                <div class="click-text">Tinju untuk buka</div>
+                <div class="click-sub">Klik terus sampai 100%</div>
+                <div class="progress-wrap">
+                    <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+                    <div class="progress-num" id="num">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="letter">
+        <div class="letter-badge">🥊 Farewell Fight Night</div>
+        <h1 class="letter-title">Halo Rosyad!</h1>
+        <p class="letter-sub">One last round before you go</p>
+
+        <div class="letter-body">
+            <p>Rosyad, terimakasih yaa sudah banyak bantu bantu kerjaan gue di DEKS. Terima kasih atas kerja keras dan kemauan belajarna yang tinggi. Ingat, setitik lama lama jadi bukit yaa</p>
+
+            <p>Pesanku, tolong selalu berpikir ke depan, jika ada hal yang membingungkan silahkan bertanya tapi sebelum itu coba gunakan semua tools yang kamu punya untuk bisa menyelesaikan masalah itu. You're more than just a machine. Sebelum kamu jadi CEO, maka kita harus belajar dulu dari level teknis.</p>
+
+            <div class="divider">∿ ∿ ∿</div>
+
+            <p>Akhir kata, terimakasih ya Rosyad atas hal hal yang sudah kamu berikan dan upayakan. Terimakasih atas kerja kerasmu selama ini. Diriku mohon maaf lahir dan batin atas segala kata dan kesalahan. Agar tetap full motivation, maka untuk rileks dan istirahat aku berikan sedikit hadiah ini buat Rosyad.</p>
+
+            <div class="closing">
+                <p>Tetap semangat cad, Sukses terus!</p>
+                <p class="signature">— Dari sudut ring ini</p>
+            </div>
+        </div>
+
+        <div class="emoji-row">🥊 💪 🏋️ 🥛 🏆 👔</div>
+    </div>
+
+    <script>
+        let progress = 0, combo = 0, last = 0;
+        const glove = document.getElementById('glove');
+        const samsak = document.getElementById('samsak');
+        const fill = document.getElementById('fill');
+        const num = document.getElementById('num');
+        const clickPhase = document.getElementById('click-phase');
+        const letter = document.getElementById('letter');
+
+        const words = ["JAB!","HOOK!","UPPERCUT!","COMBO!","POWER!","BEAST!","CHAMP!"];
+
+        glove.addEventListener('click', e => {
+            const now = Date.now();
+            combo = (now - last < 500) ? combo + 1 : 1;
+            last = now;
+
+            let inc = Math.max(4, 12 - Math.floor(progress / 10));
+            if (combo > 3) inc += 3;
+            if (combo > 6) inc += 4;
+            progress = Math.min(100, progress + inc);
+
+            fill.style.width = progress + '%';
+            num.textContent = Math.floor(progress) + '%';
+
+            samsak.classList.remove('hit');
+            void samsak.offsetWidth;
+            samsak.classList.add('hit');
+
+            for (let i = 0; i < 6; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const a = (Math.PI * 2 * i) / 6;
+                const d = 50 + Math.random() * 40;
+                p.style.setProperty('--tx', Math.cos(a) * d + 'px');
+                p.style.setProperty('--ty', Math.sin(a) * d + 'px');
+                p.style.left = e.clientX + 'px';
+                p.style.top = e.clientY + 'px';
+                p.style.background = ['#e74c3c','#f39c12','#fff'][Math.floor(Math.random()*3)];
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 400);
+            }
+
+            const t = document.createElement('div');
+            t.className = 'float-text';
+            let wi = combo > 5 ? 6 : (progress > 75 ? Math.floor(Math.random()*2)+5 : Math.floor(Math.random()*5));
+            t.textContent = words[wi];
+            t.style.left = (e.clientX + Math.random()*20 - 10) + 'px';
+            t.style.top = (e.clientY - 15) + 'px';
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 600);
+
+            if (progress >= 100) {
+                setTimeout(() => {
+                    clickPhase.classList.add('hidden');
+                    setTimeout(() => letter.classList.add('active'), 400);
+                }, 300);
+            }
+        });
+
+        setInterval(() => {
+            if (progress > 0 && progress < 100) {
+                progress = Math.max(0, progress - 0.6);
+                fill.style.width = progress + '%';
+                num.textContent = Math.floor(progress) + '%';
+                if (Date.now() - last > 800) combo = 0;
+            }
+        }, 100);
+
+        glove.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+
+</body>
+</html>
